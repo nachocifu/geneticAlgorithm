@@ -12,11 +12,12 @@ public class Main {
     public static void main(String[] args) {
 
         //Generate initial generation
+//        TODO parse a configuration file that has path to dataset and parameters for algorithm.
         List<Victim> initialGeneration = new ArrayList<Victim>();
 
 	    // Create engine with necessary parameters
         //..
-        // parameter generation
+        // TODO parameter generation based on conf
         //..
         Engine<Victim> engine = new Engine<Victim>();
 

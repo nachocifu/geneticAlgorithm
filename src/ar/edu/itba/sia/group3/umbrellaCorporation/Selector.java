@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Given a population, returns its selection
+ * TODO
  */
 public interface Selector<E extends Victim> {
 
