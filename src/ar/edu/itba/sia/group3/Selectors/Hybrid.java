@@ -14,6 +14,7 @@ public class Hybrid implements Selector<Character> {
 
     /**
      * Each selector should know how to select and how many it has to select
+     * The how many part will be decided on setup and given as the K param to the selectors
      *
      * @param selectorA
      * @param selectorB
