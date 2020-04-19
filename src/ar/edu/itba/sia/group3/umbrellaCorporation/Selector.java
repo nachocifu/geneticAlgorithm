@@ -8,5 +8,5 @@ import java.util.List;
  */
 public interface Selector<E extends Victim> {
 
-    List<E> select(List<E> currentGeneration);
+    List<E> select(List<E> currentGeneration) throws Exception;
 }
