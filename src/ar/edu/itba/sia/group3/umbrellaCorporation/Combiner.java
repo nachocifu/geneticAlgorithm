@@ -6,5 +6,5 @@ import java.util.List;
  * Receives old generation and new prospects, returns new population.
  */
 public interface Combiner<E extends Victim> {
-    List<E> combine(List<E> currentGeneration, List<E> zombies);
+    List<E> combine(List<E> currentGeneration, List<E> zombies) throws Exception;
 }
