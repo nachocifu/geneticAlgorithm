@@ -1,12 +1,29 @@
 package ar.edu.itba.sia.group3.Characters;
 
+import ar.edu.itba.sia.group3.Configuration;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Characteristic {
     public final long id;
     public final double experience, strength, life, resistance, agility, height;
 
-    private Characteristic(double experience, double strength, double life, double resistance, double agility, long id, double height) {
+    private static Map<CharacteristicType,Map<Integer,Characteristic>> characteristic;
+
+    static {
+        try {
+            characteristic = Configuration.getCharacteristics();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Characteristic(double strength, double agility,double experience, double resistance,double life,double height,long id) {
         this.experience = experience;
         this.strength = strength;
         this.life = life;
@@ -26,16 +43,16 @@ public class Characteristic {
      * @param agility
      * @param id
      */
-    public Characteristic(double experience, double strength, double life, double resistance, double agility, long id) {
-        this(experience, strength, life, resistance, agility, id, 0);
+    public Characteristic(double strength,double agility,double experience, double resistance, double life,long id) {
+        this(strength,experience,agility,resistance,life,  0,id);
     }
 
     /**
      * Used for height
      * @param height
-     */
+     */ // ID de altura es 0? eso no es para problemas?
     public Characteristic(double height) {
-        this(0,0,0,0,0,0,height);
+        this(0,0,0,0,0,height,0);
     }
 
     @Override
