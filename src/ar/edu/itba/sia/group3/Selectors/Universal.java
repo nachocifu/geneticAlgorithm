@@ -41,9 +41,12 @@ public class Universal implements Selector<Character> {
         List<Character> selectedCharacters = new LinkedList<Character>();
         double rj;
         for (int x = 0; x < k; x++) {
-            rj = (r + x - 1)/k;
+            rj = ((r + x) - 1) / k;
 
-            int findIndex = Arrays.binarySearch(acumulatedSum, rj);
+            int findIndex = Arrays.binarySearch(
+                    acumulatedSum,
+                    rj
+            );
             selectedCharacters.add(
                     currentGeneration.get(findIndex < 0 ? -(findIndex + 1) : findIndex)
             );
