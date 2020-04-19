@@ -7,16 +7,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 
 public class Characteristic {
     public final long id;
     public final double experience, strength, life, resistance, agility, height;
 
-    private static Map<CharacteristicType,Map<Integer,Characteristic>> characteristic;
+    private static Map<CharacteristicType,Map<Integer,Characteristic>> characteristics;
 
     static {
         try {
-            characteristic = Configuration.getCharacteristics();
+            characteristics = Configuration.getCharacteristics();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -72,5 +73,23 @@ public class Characteristic {
     @Override
     public int hashCode() {
         return Objects.hash(id, experience, strength, life, resistance, agility, height);
+    }
+
+    public static Characteristic getRandomCharacteristic(CharacteristicType type){
+        Random rand = new Random();
+        //select a random item id from corresponding type
+        int characteristicNumber = rand.nextInt(characteristics.get(type).size());
+        //get item
+        return characteristics.get(type).get(characteristicNumber);
+    }
+
+    public static Map<CharacteristicType,Characteristic> getRandomSet(){
+        Map<CharacteristicType,Characteristic> randomSet = new HashMap<>();
+        randomSet.put(CharacteristicType.HELMET,getRandomCharacteristic(CharacteristicType.HELMET));
+        randomSet.put(CharacteristicType.GAUNTLETS,getRandomCharacteristic(CharacteristicType.GAUNTLETS));
+        randomSet.put(CharacteristicType.BOOTS,getRandomCharacteristic(CharacteristicType.BOOTS));
+        randomSet.put(CharacteristicType.WEAPON,getRandomCharacteristic(CharacteristicType.WEAPON));
+        randomSet.put(CharacteristicType.CHESTPLATE,getRandomCharacteristic(CharacteristicType.CHESTPLATE));
+        return randomSet;
     }
 }

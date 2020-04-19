@@ -2,6 +2,7 @@ package ar.edu.itba.sia.group3;
 
 import ar.edu.itba.sia.group3.Characters.Characteristic;
 import ar.edu.itba.sia.group3.Characters.CharacteristicType;
+import ar.edu.itba.sia.group3.Mutators.SingleGenMutator;
 import ar.edu.itba.sia.group3.umbrellaCorporation.*;
 
 import java.io.BufferedReader;
@@ -87,7 +88,7 @@ public class Configuration {
             case "uniform":
 //                return new UniformMutator(mutationProbability);
             case "single_gen":
-//                return new SingleGenMutator(mutationProbability);
+                return new SingleGenMutator(mutationProbability);
             case "multi_gen":
 //                return new MultiGenMutator(mutationProbability);
             case "complete":
