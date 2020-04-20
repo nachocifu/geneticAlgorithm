@@ -54,5 +54,12 @@ public abstract class Character extends Victim {
         alleles.put(CharacteristicType.HEIGHT, height);
     }
 
+    public Character(Map<CharacteristicType,Characteristic> characteristics){
+        alleles = new HashMap<>();
+        for(Map.Entry<CharacteristicType,Characteristic> ch : characteristics.entrySet()){
+            alleles.put(ch.getKey(),ch.getValue());
+        }
+    }
+
 
 }

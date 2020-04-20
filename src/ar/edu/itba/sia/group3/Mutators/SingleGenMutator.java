@@ -33,15 +33,19 @@ public class SingleGenMutator implements Mutator<Character> {
     }
 
     public Character mutateCharacter(Character character){
+        if(rand.nextDouble() > mutationProbability){
+            return character;
+        }
         //select allele
         int randomAllele = rand.nextInt(character.getAllelesAmmount()+1); //nextInt is exclusive
         CharacteristicType toMutate = CharacteristicType.values()[randomAllele];
         if(toMutate == CharacteristicType.HEIGHT){
             double newHeight = rand.nextDouble()*(2 - 1.3) + 1.3;
-            return new Character(character., newHeight);
+//            return new Character(character.getHelmet(),character.getWeapon(),character.getchestPlate(),character.getGauntlets(),character.getBoots(),new Characteristic(newHeight));
         }
         else {
-            character.getCharacterAlleles().put(toMutate,Characteristic.getRandomCharacteristic(toMutate));
+//            Character newCharacter = new Character(character.getHelmet(),character.getWeapon(),character.getchestPlate(),character.getGauntlets(),character.getBoots(),character.getHeight());
+//            newCharacter.getCharacterAlleles().put(toMutate,Characteristic.getRandomCharacteristic(toMutate));
         }
     }
 

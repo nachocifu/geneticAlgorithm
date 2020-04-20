@@ -77,10 +77,13 @@ public class Characteristic {
 
     public static Characteristic getRandomCharacteristic(CharacteristicType type){
         Random rand = new Random();
-        //select a random item id from corresponding type
-        int characteristicNumber = rand.nextInt(characteristics.get(type).size());
-        //get item
-        return characteristics.get(type).get(characteristicNumber);
+        if(type != CharacteristicType.HEIGHT){
+            //select a random item id from corresponding type
+            int characteristicNumber = rand.nextInt(characteristics.get(type).size());
+            //get item
+            return characteristics.get(type).get(characteristicNumber);
+        }
+        return new Characteristic(rand.nextDouble()*(2 - 1.3) + 1.3);
     }
 
     public static Map<CharacteristicType,Characteristic> getRandomSet(){
@@ -90,6 +93,7 @@ public class Characteristic {
         randomSet.put(CharacteristicType.BOOTS,getRandomCharacteristic(CharacteristicType.BOOTS));
         randomSet.put(CharacteristicType.WEAPON,getRandomCharacteristic(CharacteristicType.WEAPON));
         randomSet.put(CharacteristicType.CHESTPLATE,getRandomCharacteristic(CharacteristicType.CHESTPLATE));
+        randomSet.put(CharacteristicType.HEIGHT,getRandomCharacteristic(CharacteristicType.HEIGHT));
         return randomSet;
     }
 }
