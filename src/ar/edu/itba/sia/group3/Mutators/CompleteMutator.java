@@ -10,31 +10,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class CompleteMutator implements Mutator<Character> {
+public class CompleteMutator<C extends Character> implements Mutator<C> {
     private double mutationProbability;
     private Random rand;
 
-    public MultiGenMutator(double mutationProbability) {
+    public CompleteMutator(double mutationProbability) {
         this.mutationProbability = mutationProbability;
         this.rand = new Random();
     }
 
 
     @Override
-    public List<Character> mutate(List<Character> zombies) {
-        List<Character> mutated = new LinkedList<Character>();
-        for (Character character : zombies) {
-            mutated.add(mutateCharacter(character));
+    public List<C> mutate(List<C> zombies) {
+        List<C> mutated = new LinkedList<>();
+        for (C character : zombies) {
+            try {
+                mutated.add(mutateCharacter(character));
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
         }
         return mutated;
     }
 
-    public Character mutateCharacter(Character character) {
+    private C mutateCharacter(C character) throws CloneNotSupportedException {
         if (rand.nextDouble() > mutationProbability) {
             return character;
         }
         Map<CharacteristicType,Characteristic> newSet = Characteristic.getRandomSet();
-        return new Character(newSet);
+        C newCharacter = (C) character.clone(); //ah?
+        for(Map.Entry<CharacteristicType,Characteristic> item : newSet.entrySet()){
+            newCharacter.getCharacterAlleles().put(item.getKey(),item.getValue());
+        }
+        return newCharacter;
     }
 }
 

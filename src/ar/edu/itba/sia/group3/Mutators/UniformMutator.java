@@ -9,28 +9,32 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class UniformMutator implements Mutator<Character> {
+public class UniformMutator<C extends Character> implements Mutator<C> {
     private double mutationProbability;
     private Random rand;
 
-    public MultiGenMutator(double mutationProbability) {
+    public UniformMutator(double mutationProbability) {
         this.mutationProbability = mutationProbability;
         this.rand = new Random();
     }
 
 
     @Override
-    public List<Character> mutate(List<Character> zombies) {
-        List<Character> mutated = new LinkedList<Character>();
-        for (Character character : zombies) {
-            mutated.add(mutateCharacter(character));
+    public List<C> mutate(List<C> zombies) {
+        List<C> mutated = new LinkedList<>();
+        for (C character : zombies) {
+            try {
+                mutated.add(mutateCharacter(character));
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
         }
         return mutated;
     }
 
-    public Character mutateCharacter(Character character) {
+    private C mutateCharacter(C character) throws CloneNotSupportedException {
         CharacteristicType toMutate;
-        Character newCharacter = new Character(character.getCharacterAlleles());
+        C newCharacter = (C) character.clone(); // cero seguro de esto
         for(int i = 0;i < character.getAllelesAmmount();i++){
             if(rand.nextDouble() <= mutationProbability){
                 toMutate = CharacteristicType.values()[i];

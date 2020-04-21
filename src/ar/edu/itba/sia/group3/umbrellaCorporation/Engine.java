@@ -7,24 +7,35 @@ import java.util.List;
  */
 public class Engine<E extends Victim> {
 
-    Selector<E> selector;
-    Pairer<E> pairer;
-    Breeder<E> breeder;
-    Mutator<E> mutator;
-    Combiner<E> combiner;
-    StopCondition<E> stopCondition;
+    private Selector<E> selector;
+    private Pairer<E> pairer;
+    private Breeder<E> breeder;
+    private Mutator<E> mutator;
+    private Combiner<E> combiner;
+    private StopCondition<E> stopCondition;
 
+    private static int generationNumber = 0;
+    private static long timeElapsed;
+
+    public static long getRunTime(){
+        return timeElapsed;
+    }
 
     //constructor de setup que recibira toda la info para correr con interfaces copadas de la empresa
     public Engine(){
         printLogo();
     }
 
+    public static int getGenerationNumber(){
+        return generationNumber; }               //dudas sobre esto
+
+
     //metoddo run que correra el algoritmo
-    public List<E> run(List<E> currentGeneration){
+    public List<E> run(List<E> currentGeneration) throws Exception {
 
         List<E> zombies; // ----> the ones being changed by Umbrella
         List<VictimPairs<E>> pairedZombies;
+        timeElapsed = System.currentTimeMillis();
 
         do{
 
@@ -38,7 +49,7 @@ public class Engine<E extends Victim> {
             zombies = mutator.mutate(zombies);
             // Generate the new flock of invading zombies
             currentGeneration = combiner.combine(currentGeneration, zombies);
-
+            generationNumber++;
             // Are they ready for Raccoon City?
         }while (stopCondition.shouldContinue(currentGeneration));
 

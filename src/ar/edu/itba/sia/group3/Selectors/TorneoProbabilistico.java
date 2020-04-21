@@ -7,9 +7,10 @@ import java.util.*;
 
 public class TorneoProbabilistico implements Selector<Character> {
 
-    private final int k, thresHold;
+    private final int k;
+    private final double thresHold;
 
-    public TorneoProbabilistico(int k, int th) {
+    public TorneoProbabilistico(int k, double th) {
         this.k = k;
         this.thresHold = th;
     }

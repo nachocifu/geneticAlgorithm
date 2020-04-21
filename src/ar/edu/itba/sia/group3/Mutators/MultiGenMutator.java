@@ -3,10 +3,11 @@ package ar.edu.itba.sia.group3.Mutators;
 import ar.edu.itba.sia.group3.Characters.Character;
 import ar.edu.itba.sia.group3.Characters.Characteristic;
 import ar.edu.itba.sia.group3.Characters.CharacteristicType;
+import ar.edu.itba.sia.group3.umbrellaCorporation.Mutator;
 
 import java.util.*;
 
-public class MultiGenMutator {
+public class MultiGenMutator<C extends Character> implements Mutator<C> {
 
 
     private double mutationProbability;
@@ -19,15 +20,19 @@ public class MultiGenMutator {
 
 
     @Override
-    public List<Character> mutate(List<Character> zombies) {
-        List<Character> mutated = new LinkedList<Character>();
-        for (Character character : zombies) {
-            mutated.add(mutateCharacter(character));
+    public List<C> mutate(List<C> zombies) {
+        List<C> mutated = new LinkedList<>();
+        for (C character : zombies) {
+            try {
+                mutated.add(mutateCharacter(character));
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
         }
         return mutated;
     }
 
-    public Character mutateCharacter(Character character) {
+    private C mutateCharacter(C character) throws CloneNotSupportedException {
         if (rand.nextDouble() > mutationProbability) {
             return character;
         }
@@ -37,7 +42,7 @@ public class MultiGenMutator {
         int randomAlleleAmmount = rand.nextInt(character.getAllelesAmmount() + 1); //nextInt is exclusive
         Set<Integer> mutatedAlleles = new HashSet<>();
         CharacteristicType toMutate;
-        Character newCharacter = new Character(character.getCharacterAlleles());
+        C newCharacter = (C) character.clone(); //muy poco seguro de esto
         int i = 0;
         while (i < randomAlleleAmmount){
             allele = rand.nextInt(character.getAllelesAmmount() + 1);

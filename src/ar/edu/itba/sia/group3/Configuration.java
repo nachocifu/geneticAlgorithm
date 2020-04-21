@@ -1,8 +1,16 @@
 package ar.edu.itba.sia.group3;
 
+import ar.edu.itba.sia.group3.Characters.Character;
 import ar.edu.itba.sia.group3.Characters.Characteristic;
 import ar.edu.itba.sia.group3.Characters.CharacteristicType;
+import ar.edu.itba.sia.group3.Combiners.FillAll;
+import ar.edu.itba.sia.group3.Combiners.FillParent;
+import ar.edu.itba.sia.group3.Mutators.CompleteMutator;
+import ar.edu.itba.sia.group3.Mutators.MultiGenMutator;
 import ar.edu.itba.sia.group3.Mutators.SingleGenMutator;
+import ar.edu.itba.sia.group3.Mutators.UniformMutator;
+import ar.edu.itba.sia.group3.Selectors.*;
+import ar.edu.itba.sia.group3.StopConditions.*;
 import ar.edu.itba.sia.group3.umbrellaCorporation.*;
 
 import java.io.BufferedReader;
@@ -69,15 +77,34 @@ public class Configuration {
         return "";
     }
 
-    public static Selector getSelector(){
+    public static Selector<Character> getSelector(){
         String selector = parameters.get("selector_1");
         String selector2 = parameters.get("selector_2");
-        int k = Integer.parseInt(parameters.get("K"));
         if(selector2.equals("none")){
-            return createSelector(selector,k);
+            return createSelector(selector);
         }
-//        return new HybridSelector(k, Double.parseDouble(parameters.get("A")),selector,selector2);
-        return null;
+        return new Hybrid(createSelector(selector),createSelector(selector2),Double.parseDouble(parameters.get("A")));
+    }
+
+    private static Selector<Character> createSelector(String selector){ //lo mismo con el parametro de character
+        switch (selector){
+            case "Boltzmann":
+                return new RuletaBoltzmannSelector(Integer.parseInt(parameters.get("K")));
+            case "elite":
+                return new EliteSelector(Integer.parseInt(parameters.get("K")));
+            case "ranking":
+                return new Ranking(Integer.parseInt(parameters.get("K")));
+            case "roulette":
+                return new Ruleta(Integer.parseInt(parameters.get("K")));
+            case "deterministic_tournament":
+                return new TorneoDeterministico(Integer.parseInt(parameters.get("K")),Integer.parseInt(parameters.get("M")));
+            case "stochastic_tournament":
+                return new TorneoProbabilistico(Integer.parseInt(parameters.get("K")),Double.parseDouble(parameters.get("threshold")));
+            case "universal":
+                return new Universal(Integer.parseInt(parameters.get("K")));
+            default:
+                return null;
+        }
     }
 
     public static Mutator getMutator(){
@@ -86,41 +113,39 @@ public class Configuration {
 
         switch (mutator){
             case "uniform":
-//                return new UniformMutator(mutationProbability);
+                return new UniformMutator(mutationProbability);
             case "single_gen":
                 return new SingleGenMutator(mutationProbability);
             case "multi_gen":
-//                return new MultiGenMutator(mutationProbability);
+                return new MultiGenMutator(mutationProbability);
             case "complete":
-//                return new CompleteMutator(mutationProbability);
+                return new CompleteMutator(mutationProbability);
             default:
                 return null;
         }
     }
 
-    public static Combiner getCombiner(){
+    public static Combiner<Character> getCombiner(){
         String selector = parameters.get("replacer_1");
         String selector2 = parameters.get("replacer_2");
         Selector s;
-        int k = Integer.parseInt(parameters.get("K"));
 
         if(selector2.equals("none")){
-             s = createSelector(selector,k);
+             s = createSelector(selector);
         }
         else{
-            s = null;
-//            s = HybridSelector(k, Double.parseDouble(parameters.get("B")),selector,selector2);
+            s = Hybrid(createSelector(selector),createSelector(selector2),Double.parseDouble(parameters.get("B")));
         }
         return createCombiner(s);
     }
 
-    private static Combiner createCombiner(Selector selector){
+    private static Combiner<Character> createCombiner(Selector<Character> selector){ //es de character o hay que poner un generico extends?
         String combiner = parameters.get("implementation");
         switch (combiner){
             case "fill_all":
-//                return new FillAllCombiner(selector);
+                return new FillAll(Integer.parseInt(parameters.get("N")),selector);
             case "fill_parent":
-//                return new FillParentCombiner(selector);
+                return new FillParent(Integer.parseInt(parameters.get("N")),selector);
             default:
                 return null;
         }
@@ -148,41 +173,21 @@ public class Configuration {
 
         switch (stopCondition){
             case "content":
-                int counter = Integer.parseInt(parameters.get("content_count"));
-//                return new ContentStopCondition(counter);
+                return new ContentStopCondition(Integer.parseInt(parameters.get("content_count")));
             case "max_generation":
-                int max_generation = Integer.valueOf(parameters.get("max_generation"));
-//                return new IterationStopCondition(max_generation);
+                return new MaxGenerationStopCondition(Integer.valueOf(parameters.get("max_generation")));
             case "structure":
-//                return new StructureStopCondition(Integer.valueOf(parameters.get("structure_size_percent")));
-            case "optimal":
-//                return new OptimumStopCondition(Double.parseDouble(program_configuration.get("optimal")));
+                return new StructureStopCondition(Double.parseDouble(parameters.get("structure_size_percent")),Integer.valueOf(parameters.get("structure_count")));
+            case "time":
+                return new TimeStopCondition(Long.parseLong(parameters.get("time")));
+            case "acceptable_solution":
+                return new AcceptableSolutionStopCondition(Double.parseDouble(parameters.get("fitness")));
             default:
                 return null;
         }
     }
 
-    private static Selector createSelector(String selector,int k){
-        switch (selector){
-            case "Boltzmann":
-//                return new RuletaBoltzmannSelector(k);
-            case "elite":
-//                return new EliteSelector(k);
-            case "ranking":
-//                return new RankingSelector(k);
-            case "roulette":
-//                return new RuletaSelector(k);
-            case "deterministic_tournament":
-//                return new TournamentDeterministicSelector(k);
-            case "stochastic_tournament":
-//                return new TournamentProbabilisticSelector(k);
-            case "universal":
-//                return new UniversalSelector(k);
-            default:
-                return null;
-        }
-    }
-
+    //TODO agregar validaciones faltantes: M,N,fitness y seguro hay alguna mas
     private static void validateParameters(){
         //selectors
         if(!parameters.get("selector_1").equals("elite") && !parameters.get("selector_1").equals("ranking") && !parameters.get("selector_1").equals("deterministic_tournament") && !parameters.get("selector_1").equals("stochastic_tournament")

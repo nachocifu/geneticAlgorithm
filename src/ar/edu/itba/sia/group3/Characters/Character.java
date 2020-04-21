@@ -6,10 +6,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-public abstract class Character extends Victim {
+public abstract class Character extends Victim implements Cloneable {
 
     // The Alleles of this character
     protected Map<CharacteristicType, Characteristic> alleles;
+
+    public Character clone() throws CloneNotSupportedException{
+        Character newCharacter = (Character) super.clone();
+        newCharacter.alleles = new HashMap<>(alleles);
+        return newCharacter;
+    }
 
     public int getAllelesAmmount(){
         return alleles.size();

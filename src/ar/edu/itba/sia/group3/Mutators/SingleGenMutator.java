@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class SingleGenMutator implements Mutator<Character> {
+public class SingleGenMutator<C extends Character> implements Mutator<C> {
 
 
     private double mutationProbability;
@@ -24,29 +24,34 @@ public class SingleGenMutator implements Mutator<Character> {
 
 
     @Override
-    public List<Character> mutate(List<Character> zombies) {
-        List<Character> mutated = new LinkedList<Character>();
-        for(Character character : zombies){
-            mutated.add(mutateCharacter(character));
+    public List<C> mutate(List<C> zombies) {
+        List<C> mutated = new LinkedList<>();
+        for(C character : zombies){
+            try {
+                mutated.add(mutateCharacter(character));
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
         }
         return mutated;
     }
 
-    public Character mutateCharacter(Character character){
+    private C mutateCharacter(C character) throws CloneNotSupportedException {
         if(rand.nextDouble() > mutationProbability){
             return character;
         }
+        C newCharacter = (C) character.clone(); //muy poco seguro de esto
         //select allele
         int randomAllele = rand.nextInt(character.getAllelesAmmount()+1); //nextInt is exclusive
         CharacteristicType toMutate = CharacteristicType.values()[randomAllele];
         if(toMutate == CharacteristicType.HEIGHT){
             double newHeight = rand.nextDouble()*(2 - 1.3) + 1.3;
-//            return new Character(character.getHelmet(),character.getWeapon(),character.getchestPlate(),character.getGauntlets(),character.getBoots(),new Characteristic(newHeight));
+            newCharacter.getCharacterAlleles().put(CharacteristicType.HEIGHT,new Characteristic(newHeight));
         }
         else {
-//            Character newCharacter = new Character(character.getHelmet(),character.getWeapon(),character.getchestPlate(),character.getGauntlets(),character.getBoots(),character.getHeight());
-//            newCharacter.getCharacterAlleles().put(toMutate,Characteristic.getRandomCharacteristic(toMutate));
+            newCharacter.getCharacterAlleles().put(toMutate,Characteristic.getRandomCharacteristic(toMutate));
         }
+        return newCharacter;
     }
 
 
