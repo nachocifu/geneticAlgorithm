@@ -15,8 +15,11 @@ import ar.edu.itba.sia.group3.StopConditions.*;
 import ar.edu.itba.sia.group3.umbrellaCorporation.*;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,11 +51,12 @@ public class Configuration {
 
     public static Map<CharacteristicType,Map<Integer,Characteristic>> getCharacteristics() throws IOException {
         Map<CharacteristicType,Map<Integer,Characteristic>> characteristics = new HashMap<>();
-        characteristics.put(CharacteristicType.CHESTPLATE,getCharacteristic("testdata\\pecheras.tsv"));
-        characteristics.put(CharacteristicType.WEAPON,getCharacteristic("testdata\\armas.tsv"));
-        characteristics.put(CharacteristicType.BOOTS,getCharacteristic("testdata\\botas.tsv")); //resolve?
-        characteristics.put(CharacteristicType.GAUNTLETS,getCharacteristic("testdata\\guantes.tsv"));
-        characteristics.put(CharacteristicType.HELMET,getCharacteristic("testdata\\cascos.tsv"));
+        Path root = Paths.get(".").normalize().toAbsolutePath();
+        characteristics.put(CharacteristicType.CHESTPLATE,getCharacteristic(root+File.separator+"testdata"+File.separator+"pecheras.tsv"));
+        characteristics.put(CharacteristicType.WEAPON,getCharacteristic(root+File.separator+"testdata"+File.separator+"armas.tsv"));
+        characteristics.put(CharacteristicType.BOOTS,getCharacteristic(root+File.separator+"testdata"+File.separator+"botas.tsv")); //resolve?
+        characteristics.put(CharacteristicType.GAUNTLETS,getCharacteristic(root+ File.separator+"testdata"+File.separator+"guantes.tsv"));
+        characteristics.put(CharacteristicType.HELMET,getCharacteristic(root+File.separator+"testdata"+File.separator+"cascos.tsv"));
         return characteristics;
     }
 
@@ -64,7 +68,7 @@ public class Configuration {
         BufferedReader objReader = new BufferedReader(new FileReader(path));
         currentLine = objReader.readLine(); //ignore first line
         while ((currentLine = objReader.readLine()) != null) {
-            params = currentLine.split(" ");
+            params = currentLine.split("\t");
             characteristicElements.put(Integer.parseInt(params[0]),new Characteristic(Double.parseDouble(params[1]),Double.parseDouble(params[2]),Double.parseDouble(params[3]),Double.parseDouble(params[4]),Double.parseDouble(params[5]),Long.parseLong(params[0])));
         }
         return characteristicElements;
@@ -110,7 +114,7 @@ public class Configuration {
 
     public static Mutator<Character> getMutator(){
         String mutator = parameters.get("mutator");
-        double mutationProbability = Double.parseDouble("mutation_probability");
+        double mutationProbability = Double.parseDouble(parameters.get("mutation_probability"));
 
         switch (mutator){
             case "uniform":
