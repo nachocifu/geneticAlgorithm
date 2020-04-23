@@ -10,11 +10,9 @@ import java.util.Random;
 
 public class FillAll implements Combiner<Character> {
 
-    public final int n;
     public final Selector<Character> selector;
 
-    public FillAll(int n, Selector<Character> selector) {
-        this.n = n;
+    public FillAll(Selector<Character> selector) {
         this.selector = selector;
     }
 

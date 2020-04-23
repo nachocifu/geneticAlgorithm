@@ -6,6 +6,7 @@ import ar.edu.itba.sia.group3.umbrellaCorporation.Selector;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EliteSelector implements Selector<Character> {
 
@@ -28,7 +29,16 @@ public class EliteSelector implements Selector<Character> {
         if(k>currentGeneration.size())
             throw new Exception("No puedo llegar a un caso con K mayor que la generacion que me llegue");
 
-        return currentGeneration.subList(0, k);
+        return currentGeneration.subList(0, k).parallelStream().map(
+                character -> {
+                    try {
+                        return character.clone();
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+        ).collect(Collectors.toList());
     }
 
 }

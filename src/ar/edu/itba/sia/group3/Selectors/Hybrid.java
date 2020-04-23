@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Hybrid implements Selector<Character> {
 
@@ -28,6 +29,15 @@ public class Hybrid implements Selector<Character> {
     public List<Character> select(List<Character> currentGeneration) throws Exception {
         List<Character> mergedList = new LinkedList<Character>(selectorA.select(currentGeneration));
         mergedList.addAll(selectorB.select(currentGeneration));
-        return mergedList;
+        return mergedList.parallelStream().map(
+                character -> {
+                    try {
+                        return character.clone();
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+        ).collect(Collectors.toList());
     }
 }

@@ -25,7 +25,6 @@ replacer_2 = ranking
 #Implementation
 #implementation possibilities: fill all, fill parent
 implementation = fill_all
-N = 50
 
 #Crosser
 #crosser methods: single point cross,double point cross, uniform cross,annular cross

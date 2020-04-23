@@ -9,6 +9,7 @@ import ar.edu.itba.sia.group3.Mutators.CompleteMutator;
 import ar.edu.itba.sia.group3.Mutators.MultiGenMutator;
 import ar.edu.itba.sia.group3.Mutators.SingleGenMutator;
 import ar.edu.itba.sia.group3.Mutators.UniformMutator;
+import ar.edu.itba.sia.group3.Pairers.DefaultPairer;
 import ar.edu.itba.sia.group3.Selectors.*;
 import ar.edu.itba.sia.group3.StopConditions.*;
 import ar.edu.itba.sia.group3.umbrellaCorporation.*;
@@ -43,7 +44,6 @@ public class Configuration {
             }
         }
         validateParameters();
-
     }
 
     public static Map<CharacteristicType,Map<Integer,Characteristic>> getCharacteristics() throws IOException {
@@ -70,56 +70,57 @@ public class Configuration {
         return characteristicElements;
     }
 
-    public static String getParameterValue(String parameter){
-        if(parameters.containsKey(parameter)){
-            return parameters.get(parameter);
-        }
-        return "";
-    }
-
     public static Selector<Character> getSelector(){
         String selector = parameters.get("selector_1");
         String selector2 = parameters.get("selector_2");
         if(selector2.equals("none")){
-            return createSelector(selector);
+            return createSelector(selector, Double.parseDouble(parameters.get("K")));
         }
-        return new Hybrid(createSelector(selector),createSelector(selector2),Double.parseDouble(parameters.get("A")));
+        return new Hybrid(
+                createSelector(
+                        selector,
+                        Integer.parseInt(parameters.get("K"))*Double.parseDouble(parameters.get("A"))
+                ),
+                createSelector(
+                        selector2,
+                        Integer.parseInt(parameters.get("K"))*(1-Double.parseDouble(parameters.get("A"))))
+        );
     }
 
-    private static Selector<Character> createSelector(String selector){ //lo mismo con el parametro de character
+    private static Selector<Character> createSelector(String selector, Double K){ //lo mismo con el parametro de character
         switch (selector){
             case "Boltzmann":
-                return new RuletaBoltzmannSelector(Integer.parseInt(parameters.get("K")));
+//                return new RuletaBoltzmannSelector(Integer.parseInt(parameters.get("K")));
             case "elite":
-                return new EliteSelector(Integer.parseInt(parameters.get("K")));
+                return new EliteSelector(K.intValue());
             case "ranking":
-                return new Ranking(Integer.parseInt(parameters.get("K")));
+                return new Ranking(K.intValue());
             case "roulette":
-                return new Ruleta(Integer.parseInt(parameters.get("K")));
+                return new Ruleta(K.intValue());
             case "deterministic_tournament":
-                return new TorneoDeterministico(Integer.parseInt(parameters.get("K")),Integer.parseInt(parameters.get("M")));
+                return new TorneoDeterministico(K.intValue(),Integer.parseInt(parameters.get("M")));
             case "stochastic_tournament":
-                return new TorneoProbabilistico(Integer.parseInt(parameters.get("K")),Double.parseDouble(parameters.get("threshold")));
+                return new TorneoProbabilistico(K.intValue(),Double.parseDouble(parameters.get("threshold")));
             case "universal":
-                return new Universal(Integer.parseInt(parameters.get("K")));
+                return new Universal(K.intValue());
             default:
                 return null;
         }
     }
 
-    public static Mutator getMutator(){
+    public static Mutator<Character> getMutator(){
         String mutator = parameters.get("mutator");
         double mutationProbability = Double.parseDouble("mutation_probability");
 
         switch (mutator){
             case "uniform":
-                return new UniformMutator(mutationProbability);
+                return new UniformMutator<Character>(mutationProbability);
             case "single_gen":
-                return new SingleGenMutator(mutationProbability);
+                return new SingleGenMutator<Character>(mutationProbability);
             case "multi_gen":
-                return new MultiGenMutator(mutationProbability);
+                return new MultiGenMutator<Character>(mutationProbability);
             case "complete":
-                return new CompleteMutator(mutationProbability);
+                return new CompleteMutator<Character>(mutationProbability);
             default:
                 return null;
         }
@@ -128,22 +129,46 @@ public class Configuration {
     public static Combiner<Character> getCombiner(){
         String selector = parameters.get("replacer_1");
         String selector2 = parameters.get("replacer_2");
-        Selector s;
+        Selector<Character> s;
+        Double N = Double.parseDouble(parameters.get("populationSize"));
+        Double K = Double.parseDouble(parameters.get("K"));
+
+        //Figure out K
+        //For FillParent The selectors K value should be N if K>N or N-K if N>K
+        //For FillAll K=N
+        if(parameters.get("implementation").toString().equals("fill_all"))
+            K = N;
+        else if(K>N)
+            K = N;
+        else
+            K = N-K;
+
 
         if(selector2.equals("none")){
-             s = createSelector(selector);
+             s = createSelector(selector, K);
         }
         else{
-            s = Hybrid(createSelector(selector),createSelector(selector2),Double.parseDouble(parameters.get("B")));
+            s = new Hybrid(
+                    createSelector(
+                            selector,
+                            Double.parseDouble(parameters.get("B"))*K),
+                    createSelector(
+                            selector2,
+                            Double.parseDouble(parameters.get("B"))*(1-K))
+            );
         }
         return createCombiner(s);
+    }
+
+    public static Pairer<Character> getPairer(){
+        return new DefaultPairer();
     }
 
     private static Combiner<Character> createCombiner(Selector<Character> selector){ //es de character o hay que poner un generico extends?
         String combiner = parameters.get("implementation");
         switch (combiner){
             case "fill_all":
-                return new FillAll(Integer.parseInt(parameters.get("N")),selector);
+                return new FillAll(selector);
             case "fill_parent":
                 return new FillParent(Integer.parseInt(parameters.get("N")),selector);
             default:
@@ -151,7 +176,7 @@ public class Configuration {
         }
     }
 
-    public static Breeder getBreeder(){
+    public static Breeder<Character> getBreeder(){
         String breeder = parameters.get("crosser");
         double recombinationProbability = Double.parseDouble(parameters.get("recombination_probability"));
         switch (breeder){
@@ -168,7 +193,7 @@ public class Configuration {
         }
     }
 
-    public static StopCondition getStopCondition(){
+    public static StopCondition<Character> getStopCondition(){
         String stopCondition = parameters.get("stop_condition");
 
         switch (stopCondition){

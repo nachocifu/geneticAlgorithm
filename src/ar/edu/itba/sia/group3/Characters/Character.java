@@ -66,6 +66,4 @@ public abstract class Character extends Victim implements Cloneable {
             alleles.put(ch.getKey(),ch.getValue());
         }
     }
-
-
 }

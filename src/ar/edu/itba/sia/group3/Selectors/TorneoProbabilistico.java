@@ -4,6 +4,7 @@ import ar.edu.itba.sia.group3.Characters.Character;
 import ar.edu.itba.sia.group3.umbrellaCorporation.Selector;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TorneoProbabilistico implements Selector<Character> {
 
@@ -48,7 +49,16 @@ public class TorneoProbabilistico implements Selector<Character> {
             }
         }
 
-        return selectedCharacters;
+        return selectedCharacters.parallelStream().map(
+                character -> {
+                    try {
+                        return character.clone();
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+        ).collect(Collectors.toList());
     }
 
 }

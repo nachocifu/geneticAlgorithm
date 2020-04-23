@@ -41,7 +41,16 @@ public class Ruleta implements Selector<Character> {
             );
         }
 
-        return selectedCharacters;
+        return selectedCharacters.parallelStream().map(
+                character -> {
+                    try {
+                        return character.clone();
+                    } catch (CloneNotSupportedException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+        ).collect(Collectors.toList());
     }
 
 }

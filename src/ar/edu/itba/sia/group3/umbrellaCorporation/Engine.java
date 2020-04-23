@@ -21,13 +21,19 @@ public class Engine<E extends Victim> {
         return timeElapsed;
     }
 
-    //constructor de setup que recibira toda la info para correr con interfaces copadas de la empresa
-    public Engine(){
+    public Engine(Selector<E> selector, Pairer<E> pairer, Breeder<E> breeder, Mutator<E> mutator, Combiner<E> combiner, StopCondition<E> stopCondition) {
         printLogo();
+        this.selector = selector;
+        this.pairer = pairer;
+        this.breeder = breeder;
+        this.mutator = mutator;
+        this.combiner = combiner;
+        this.stopCondition = stopCondition;
     }
 
     public static int getGenerationNumber(){
-        return generationNumber; }               //dudas sobre esto
+        return generationNumber;   //dudas sobre esto
+    }
 
 
     //metoddo run que correra el algoritmo
