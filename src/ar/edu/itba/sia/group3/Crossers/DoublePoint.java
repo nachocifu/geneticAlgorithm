@@ -19,10 +19,10 @@ public class DoublePoint implements Breeder<Character> {
         Random random = new Random();
 
         for ( VictimPairs<Character> pair: victimPairs ) {
-            if(pair.b==null) {
-                aux.add(pair.a);
-                continue;
-            }
+            aux.add(pair.a);
+            if(pair.b==null) continue;
+            aux.add(pair.b);
+
 
             int firstPoint,secondPoint;
             firstPoint =random.nextInt((CharacteristicType.values().length-1));

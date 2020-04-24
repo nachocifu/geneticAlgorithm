@@ -48,9 +48,9 @@ public class Engine<E extends Victim> {
             // Select the zombies umbrella will experiment on
             zombies = selector.select(currentGeneration);
             // Group zombies for metamorphosis
-//            pairedZombies = pairer.getPairs(zombies);
+            pairedZombies = pairer.getPairs(zombies);
 //            // Morph them zombies
-//            zombies = breeder.breed(pairedZombies);
+            zombies = breeder.breed(pairedZombies);
 //            // Mutate any defectives?
 //            zombies = mutator.mutate(zombies);
             // Generate the new flock of invading zombies

@@ -21,16 +21,18 @@ public class SinglePoint implements Breeder<Character> {
         Random random = new Random();
 
         for ( VictimPairs<Character> pair: victimPairs ) {
-            if(pair.b==null) {
-                aux.add(pair.a);
-                continue;
-            }
+
+            aux.add(pair.a);
+            if(pair.b==null) continue;
+            aux.add(pair.b);
+
 
             for (
                     int i = random.nextInt((CharacteristicType.values().length-1));
                     i < (CharacteristicType.values().length-1);
                     i++
             ) {
+
                 CharacteristicType type = CharacteristicType.values()[i];
                 Characteristic characteristicA = pair.a.getCharacterAlleles().get(type);
                 Characteristic characteristicB = pair.b.getCharacterAlleles().get(type);

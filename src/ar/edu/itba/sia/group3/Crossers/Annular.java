@@ -19,10 +19,10 @@ public class Annular implements Breeder<Character> {
         Random random = new Random();
 
         for ( VictimPairs<Character> pair: victimPairs ) {
-            if(pair.b==null) {
-                aux.add(pair.a);
-                continue;
-            }
+            aux.add(pair.a);
+            if(pair.b==null) continue;
+            aux.add(pair.b);
+
 
             int annular = random.nextInt((CharacteristicType.values().length-1));
             int lengthOfAnnullar = random.nextInt((CharacteristicType.values().length-1)/2);

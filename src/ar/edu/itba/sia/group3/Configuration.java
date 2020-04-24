@@ -5,6 +5,10 @@ import ar.edu.itba.sia.group3.Characters.Characteristic;
 import ar.edu.itba.sia.group3.Characters.CharacteristicType;
 import ar.edu.itba.sia.group3.Combiners.FillAll;
 import ar.edu.itba.sia.group3.Combiners.FillParent;
+import ar.edu.itba.sia.group3.Crossers.Annular;
+import ar.edu.itba.sia.group3.Crossers.DoublePoint;
+import ar.edu.itba.sia.group3.Crossers.SinglePoint;
+import ar.edu.itba.sia.group3.Crossers.Uniform;
 import ar.edu.itba.sia.group3.Mutators.CompleteMutator;
 import ar.edu.itba.sia.group3.Mutators.MultiGenMutator;
 import ar.edu.itba.sia.group3.Mutators.SingleGenMutator;
@@ -197,16 +201,15 @@ public class Configuration {
 
     public static Breeder<Character> getBreeder(){
         String breeder = parameters.get("crosser");
-        double recombinationProbability = Double.parseDouble(parameters.get("recombination_probability"));
         switch (breeder){
             case "annular":
-//                return new AnnularBreeder(recombinationProbability);
+                return new Annular();
             case "single_point":
-//                return new SinglePointBreeder(recombinationProbability);
+                return new SinglePoint();
             case "double_point":
-//                return new DoublePointBreeder(recombinationProbability);
+                return new DoublePoint();
             case "uniform":
-//                return new UniformBreeder(recombinationProbability);
+                return new Uniform(Double.parseDouble(parameters.get("recombination_probability")));
             default:
                 return null;
         }

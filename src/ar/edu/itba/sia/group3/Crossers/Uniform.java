@@ -12,13 +12,13 @@ import java.util.Random;
 
 public class Uniform implements Breeder<Character> {
 
-    private int threshold;
+    private double threshold;
 
     /**
      *
      * @param threshold between [0,1]
      */
-    public Uniform(int threshold) {
+    public Uniform(double threshold) {
         this.threshold = threshold;
     }
 
@@ -29,10 +29,10 @@ public class Uniform implements Breeder<Character> {
         Random random = new Random();
 
         for ( VictimPairs<Character> pair: victimPairs ) {
-            if(pair.b==null) {
-                aux.add(pair.a);
-                continue;
-            }
+            aux.add(pair.a);
+            if(pair.b==null) continue;
+            aux.add(pair.b);
+
 
             for (
                     int i = 0;
