@@ -93,7 +93,7 @@ public class Configuration {
         return new Hybrid(
                 createSelector(
                         selector,
-                        Math.floor(K*A +((Math.floor(K*A)+Math.floor(K*(1-A)))<K?1:0)) //esta ternaria es para cuando el decimal me tira uno menos (pq casteamos y lo tira para abajo siempre)
+                        Math.ceil(K*A)
                 ),
                 createSelector(
                         selector2,
@@ -168,7 +168,7 @@ public class Configuration {
             s = new Hybrid(
                     createSelector(
                             selector,
-                            Math.floor(K*B +((Math.floor(K*B)+Math.floor(K*(1-B)))<K?1:0)) //esta ternaria es para cuando el decimal me tira uno menos (pq casteamos y lo tira para abajo siempre)
+                            Math.ceil(B*K)
                     ),
                     createSelector(
                             selector2,

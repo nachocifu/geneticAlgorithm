@@ -4,12 +4,17 @@ import ar.edu.itba.sia.group3.Characters.Character;
 import ar.edu.itba.sia.group3.umbrellaCorporation.Pairer;
 import ar.edu.itba.sia.group3.umbrellaCorporation.VictimPairs;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class DefaultPairer implements Pairer<Character> {
     @Override
     public List<VictimPairs<Character>> getPairs(List<Character> zombies) {
+        // Shuffle Group (@see Alan)
+        Collections.shuffle(zombies);
+
+
         // Remove one element if not even list
         Character extra = null;
         if(zombies.size()%2==1) {

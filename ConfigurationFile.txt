@@ -5,11 +5,11 @@ populationSize = 100
 #Selectors
 #selection methods: elite,ranking,deterministic tournament,stochastic tournament,roulette,universal,Boltzmann,none
 #A is what % assigned to s1 and 1-A % assigned to s2
-A = 0
+A = 0.9
 selector_1 = elite
 selector_2 = ranking
 #individuals selected from population
-K = 50
+K = 51
 #for individuals participating in tournaments tournament
 M = 2
 #for stochastic tournament
@@ -18,9 +18,9 @@ threshold = 0.7
 #Replacers
 #same as selectors
 #B is what % assigned to s1 and 1-B % assigned to s2
-B = 0.9111
-replacer_1 = ranking
-replacer_2 = elite
+B = 0.01
+replacer_1 = elite
+replacer_2 = ranking
 
 #Implementation
 #implementation possibilities: fill_all, fill_parent
