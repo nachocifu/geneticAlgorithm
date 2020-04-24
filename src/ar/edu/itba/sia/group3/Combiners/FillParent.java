@@ -25,12 +25,12 @@ public class FillParent implements Combiner<Character> {
     @Override
     public List<Character> combine(List<Character> currentGeneration, List<Character> children) throws Exception {
 
-        if(children.size()>n)
+        if(children.size()>=n)
             return selector.select(children);
 
         List<Character> mergedList = new LinkedList<>(children);
         mergedList.addAll(selector.select(currentGeneration));
-        return selector.select(mergedList);
+        return mergedList;
 
     }
 }

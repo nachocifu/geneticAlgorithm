@@ -21,7 +21,7 @@ public class DefaultPairer implements Pairer<Character> {
         List<VictimPairs<Character>> pairs = new LinkedList<>();
         for (int i = 0; i<zombies.size()/2;i++)
             pairs.add(
-                    new VictimPairs<Character>(zombies.get(0),zombies.get((zombies.size()-i)))
+                    new VictimPairs<Character>(zombies.get(i),zombies.get((zombies.size()-i-1)))
             );
 
         if(extra!=null) pairs.add(new VictimPairs<>(extra,null));

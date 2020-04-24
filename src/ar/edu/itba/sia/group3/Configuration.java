@@ -49,7 +49,14 @@ public class Configuration {
         validateParameters();
     }
 
+    private static Map<CharacteristicType,Map<Integer,Characteristic>> characteristicTypeMapMap;
     public static Map<CharacteristicType,Map<Integer,Characteristic>> getCharacteristics() throws IOException {
+        if(characteristicTypeMapMap == null)
+            characteristicTypeMapMap = handleCharacteristics();
+        return characteristicTypeMapMap;
+    }
+
+    private static Map<CharacteristicType,Map<Integer,Characteristic>> handleCharacteristics() throws IOException {
         Map<CharacteristicType,Map<Integer,Characteristic>> characteristics = new HashMap<>();
         Path root = Paths.get(".").normalize().toAbsolutePath();
         characteristics.put(CharacteristicType.CHESTPLATE,getCharacteristic(root+File.separator+"testdata"+File.separator+"pecheras.tsv"));
@@ -77,17 +84,21 @@ public class Configuration {
     public static Selector<Character> getSelector(){
         String selector = parameters.get("selector_1");
         String selector2 = parameters.get("selector_2");
+        Double K = Double.parseDouble(parameters.get("K"));
+        Double A = Double.parseDouble(parameters.get("A"));
+
         if(selector2.equals("none")){
-            return createSelector(selector, Double.parseDouble(parameters.get("K")));
+            return createSelector(selector, K);
         }
         return new Hybrid(
                 createSelector(
                         selector,
-                        Integer.parseInt(parameters.get("K"))*Double.parseDouble(parameters.get("A"))
+                        Math.floor(K*A +((Math.floor(K*A)+Math.floor(K*(1-A)))<K?1:0)) //esta ternaria es para cuando el decimal me tira uno menos (pq casteamos y lo tira para abajo siempre)
                 ),
                 createSelector(
                         selector2,
-                        Integer.parseInt(parameters.get("K"))*(1-Double.parseDouble(parameters.get("A"))))
+                        Math.floor(K*(1-A))
+                )
         );
     }
 
@@ -136,16 +147,18 @@ public class Configuration {
         Selector<Character> s;
         Double N = Double.parseDouble(parameters.get("populationSize"));
         Double K = Double.parseDouble(parameters.get("K"));
+        Double B = Double.parseDouble(parameters.get("B"));
 
         //Figure out K
         //For FillParent The selectors K value should be N if K>N or N-K if N>K
         //For FillAll K=N
         if(parameters.get("implementation").toString().equals("fill_all"))
             K = N;
-        else if(K>N)
-            K = N;
         else
-            K = N-K;
+            if(K>=N)
+                K = N;
+            else
+                K = N-K;
 
 
         if(selector2.equals("none")){
@@ -155,10 +168,12 @@ public class Configuration {
             s = new Hybrid(
                     createSelector(
                             selector,
-                            Double.parseDouble(parameters.get("B"))*K),
+                            Math.floor(K*B +((Math.floor(K*B)+Math.floor(K*(1-B)))<K?1:0)) //esta ternaria es para cuando el decimal me tira uno menos (pq casteamos y lo tira para abajo siempre)
+                    ),
                     createSelector(
                             selector2,
-                            Double.parseDouble(parameters.get("B"))*(1-K))
+                            Math.floor((1-B)*K)
+                    )
             );
         }
         return createCombiner(s);
@@ -174,7 +189,7 @@ public class Configuration {
             case "fill_all":
                 return new FillAll(selector);
             case "fill_parent":
-                return new FillParent(Integer.parseInt(parameters.get("N")),selector);
+                return new FillParent(Integer.parseInt(parameters.get("populationSize")),selector);
             default:
                 return null;
         }
@@ -294,5 +309,9 @@ public class Configuration {
         if(parameters.get("stop_condition").equals("structure") && (Double.parseDouble(parameters.get("structure_size_percent")) < 0 || Double.parseDouble(parameters.get("structure_size_percent")) > 1)){
             throw new IllegalArgumentException("structure_size_percent value");
         }
+    }
+
+    public static int initialPopulationSize() {
+        return Integer.parseInt(parameters.get("populationSize"));
     }
 }
