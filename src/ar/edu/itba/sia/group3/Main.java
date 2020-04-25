@@ -43,14 +43,15 @@ public class Main {
         // Run the Engine
         List<Character> evolvedGeneration = engine.run(initialGeneration);
 
-        System.out.println("Initial Size: "+initialGeneration.size());
-        System.out.println("Final Size: "+evolvedGeneration.size());
+        System.out.println("Initial Size: "+Character.getSummary(initialGeneration));
+        System.out.println("Final Size: "+Character.getSummary(evolvedGeneration));
         System.out.println("~~ Done ~~");
 
         // Handle algorithm results
         // ...
         // Some shit here...
     }
+
 
     /**
      * Inspired on old TPE

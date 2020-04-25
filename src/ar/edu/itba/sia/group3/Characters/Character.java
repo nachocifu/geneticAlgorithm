@@ -3,6 +3,7 @@ package ar.edu.itba.sia.group3.Characters;
 import ar.edu.itba.sia.group3.umbrellaCorporation.Victim;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -132,6 +133,21 @@ public abstract class Character extends Victim implements Cloneable {
 
     public Double getDefense(){
         return (getResistance()+getExperience())*getLife()*getDEM();
+    }
+
+    public static String getSummary(List<Character> list) {
+        double fitness, sum=0;
+        double max = list.get(0).getFitness();
+        double min = max;
+
+        for (Character character: list) {
+            fitness = character.getFitness();
+            sum+=fitness;
+            if(fitness<min) min=fitness;
+            if(max<fitness) max=fitness;
+        }
+
+        return "Max "+max+" Min "+min+" Sum "+sum+" AVG "+(sum/list.size());
     }
 
 }
