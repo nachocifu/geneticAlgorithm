@@ -16,6 +16,6 @@ public class Warrior extends Character {
 
     @Override
     public double getFitness() {
-        return 0;
+        return 0.6*getAttack()+0.6*getDefense();
     }
 }

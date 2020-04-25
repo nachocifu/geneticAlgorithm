@@ -1,9 +1,7 @@
 package ar.edu.itba.sia.group3;
 
+import ar.edu.itba.sia.group3.Characters.*;
 import ar.edu.itba.sia.group3.Characters.Character;
-import ar.edu.itba.sia.group3.Characters.Characteristic;
-import ar.edu.itba.sia.group3.Characters.CharacteristicType;
-import ar.edu.itba.sia.group3.Characters.Warrior;
 import ar.edu.itba.sia.group3.umbrellaCorporation.Engine;
 import ar.edu.itba.sia.group3.umbrellaCorporation.Victim;
 
@@ -58,12 +56,21 @@ public class Main {
      * Inspired on old TPE
      * @return
      */
-    private static List<Character> getInitialGeneration() {
+    private static List<Character> getInitialGeneration() throws Exception {
         int N = Configuration.initialPopulationSize();
 
         return IntStream.range(0,N).parallel()
-                .mapToObj(operand -> //Ignore operand, we only care that this is called N times possibly with multithreading
-                        new Warrior(Characteristic.getRandomSet())).collect(Collectors.toList()
+                .mapToObj(operand -> {//Ignore operand, we only care that this is called N times possibly with multithreading
+                            switch (Configuration.getCharacterClass()) {
+                                case "warrior": return new Warrior(Characteristic.getRandomSet());
+                                case "archer": return new Archer(Characteristic.getRandomSet());
+                                case "defender": return new Defender(Characteristic.getRandomSet());
+                                case "spy": return new Spy(Characteristic.getRandomSet());
+                                default:
+                                    return null;
+                            }
+                        }
+                ).collect(Collectors.toList()
                 );
     }
 }

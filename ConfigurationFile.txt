@@ -1,6 +1,9 @@
 #Population
 populationSize = 100
 
+#CharacterType
+## warrior, archer, defense, spy
+character = warrior
 
 #Selectors
 #selection methods: elite,ranking,deterministic tournament,stochastic tournament,roulette,universal,Boltzmann,none
@@ -38,7 +41,7 @@ mutation_probability = 0.4
 
 #Stop condition
 #stop conditions: time,max generation,structure,content,acceptable
-stop_condition = content
+stop_condition = max_generation
 #if 95% of the population doesnt change, ends
 structure_size_percent = 0.95
 structure_count = 10

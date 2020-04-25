@@ -66,4 +66,72 @@ public abstract class Character extends Victim implements Cloneable {
             alleles.put(ch.getKey(),ch.getValue());
         }
     }
+    
+    private Double getATM(){
+        Double h = alleles.get(CharacteristicType.HEIGHT).height;
+        return 0.7-Math.pow(3*h-5, 4)+Math.pow(3*h-5,2)+(2*h/10);
+    }
+
+    private Double getDEM(){
+        Double h = alleles.get(CharacteristicType.HEIGHT).height;
+        return 1.9+Math.pow(2.5*h-4.16,4)-Math.pow(2.5*h-4.16,2)-(3*h/10);
+    }
+
+    private Double getStrength(){
+        Double sum = 0.0;
+        for (CharacteristicType type: CharacteristicType.values()) {
+            if(type == CharacteristicType.HEIGHT) continue;
+            sum += alleles.get(type).strength;
+        }
+        return 100*Math.tanh(0.01*sum);
+    }
+
+    private Double getAgility(){
+        Double sum = 0.0;
+        for (CharacteristicType type: CharacteristicType.values()) {
+            if(type == CharacteristicType.HEIGHT) continue;
+            sum += alleles.get(type).agility;
+        }
+        return Math.tanh(0.01*sum);
+    }
+
+    /**
+     * Pericia
+     * @return
+     */
+    private Double getExperience(){
+        Double sum = 0.0;
+        for (CharacteristicType type: CharacteristicType.values()) {
+            if(type == CharacteristicType.HEIGHT) continue;
+            sum += alleles.get(type).experience;
+        }
+        return 0.6*Math.tanh(0.01*sum);
+    }
+
+    private Double getResistance(){
+        Double sum = 0.0;
+        for (CharacteristicType type: CharacteristicType.values()) {
+            if(type == CharacteristicType.HEIGHT) continue;
+            sum += alleles.get(type).resistance;
+        }
+        return Math.tanh(0.01*sum);
+    }
+
+    private Double getLife(){
+        Double sum = 0.0;
+        for (CharacteristicType type: CharacteristicType.values()) {
+            if(type == CharacteristicType.HEIGHT) continue;
+            sum += alleles.get(type).life;
+        }
+        return 100*Math.tanh(0.01*sum);
+    }
+
+    public Double getAttack(){
+        return (getAgility()+getExperience())*getStrength()*getATM();
+    }
+
+    public Double getDefense(){
+        return (getResistance()+getExperience())*getLife()*getDEM();
+    }
+
 }

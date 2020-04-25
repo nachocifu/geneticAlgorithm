@@ -24,12 +24,9 @@ public class Ranking implements Selector<Character> {
     public List<Character> select(List<Character> currentGeneration) throws Exception {
 
         // Primero ordenamos segun el fitness
-        Collections.sort(currentGeneration, new Comparator<Character>() {
-            @Override
-            public int compare(Character o1, Character o2) {
-                return (int) (o2.getFitness()-o1.getFitness());
-            }
-        });
+        currentGeneration = currentGeneration.parallelStream()
+                .sorted(Comparator.comparing(Character::getFitness).reversed())
+                .collect(Collectors.toList());
 
         // Aca tenemos la suma total para sacar la proporcion
         double totalSum = 0.0;

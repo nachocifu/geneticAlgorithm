@@ -19,12 +19,9 @@ public class EliteSelector implements Selector<Character> {
 
     @Override
     public List<Character> select(List<Character> currentGeneration) throws Exception {
-        Collections.sort(currentGeneration, new Comparator<Character>() {
-            @Override
-            public int compare(Character o1, Character o2) {
-                return (int) (-(o2.getFitness()-o1.getFitness()));
-            }
-        });
+        currentGeneration = currentGeneration.parallelStream()
+                .sorted(Comparator.comparing(Character::getFitness).reversed())
+                .collect(Collectors.toList());
 
         if(k>currentGeneration.size())
             throw new Exception("No puedo llegar a un caso con K mayor que la generacion que me llegue");

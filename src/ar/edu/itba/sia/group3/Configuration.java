@@ -3,6 +3,7 @@ package ar.edu.itba.sia.group3;
 import ar.edu.itba.sia.group3.Characters.Character;
 import ar.edu.itba.sia.group3.Characters.Characteristic;
 import ar.edu.itba.sia.group3.Characters.CharacteristicType;
+import ar.edu.itba.sia.group3.Characters.Warrior;
 import ar.edu.itba.sia.group3.Combiners.FillAll;
 import ar.edu.itba.sia.group3.Combiners.FillParent;
 import ar.edu.itba.sia.group3.Crossers.Annular;
@@ -85,6 +86,10 @@ public class Configuration {
         return characteristicElements;
     }
 
+    public static String getCharacterClass(){
+        return parameters.get("character");
+    }
+
     public static Selector<Character> getSelector(){
         String selector = parameters.get("selector_1");
         String selector2 = parameters.get("selector_2");
@@ -133,13 +138,13 @@ public class Configuration {
 
         switch (mutator){
             case "uniform":
-                return new UniformMutator<Character>(mutationProbability);
+                return new UniformMutator(mutationProbability);
             case "single_gen":
-                return new SingleGenMutator<Character>(mutationProbability);
+                return new SingleGenMutator(mutationProbability);
             case "multi_gen":
-                return new MultiGenMutator<Character>(mutationProbability);
+                return new MultiGenMutator(mutationProbability);
             case "complete":
-                return new CompleteMutator<Character>(mutationProbability);
+                return new CompleteMutator(mutationProbability);
             default:
                 return null;
         }
