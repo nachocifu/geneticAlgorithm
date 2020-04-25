@@ -8,8 +8,9 @@ import ar.edu.itba.sia.group3.umbrellaCorporation.Mutator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-public class UniformMutator<C extends Character> implements Mutator<C> {
+public class UniformMutator implements Mutator<Character> {
     private double mutationProbability;
     private Random rand;
 
@@ -20,27 +21,21 @@ public class UniformMutator<C extends Character> implements Mutator<C> {
 
 
     @Override
-    public List<C> mutate(List<C> zombies) {
-        List<C> mutated = new LinkedList<>();
-        for (C character : zombies) {
-            try {
-                mutated.add(mutateCharacter(character));
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-        }
-        return mutated;
+    public List<Character> mutate(List<Character> zombies) {
+        return zombies.parallelStream()
+                .map(this::mutateCharacter)
+                .collect(Collectors.toList());
     }
 
-    private C mutateCharacter(C character) throws CloneNotSupportedException {
+    private Character mutateCharacter(Character character) {
         CharacteristicType toMutate;
-        C newCharacter = (C) character.clone(); // cero seguro de esto
+
         for(int i = 0;i < character.getAllelesAmmount();i++){
             if(rand.nextDouble() <= mutationProbability){
                 toMutate = CharacteristicType.values()[i];
-                newCharacter.getCharacterAlleles().put(toMutate, Characteristic.getRandomCharacteristic(toMutate));
+                character.getCharacterAlleles().put(toMutate, Characteristic.getRandomCharacteristic(toMutate));
             }
         }
-        return newCharacter;
+        return character;
     }
 }

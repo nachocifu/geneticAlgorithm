@@ -9,8 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-public class CompleteMutator<C extends Character> implements Mutator<C> {
+public class CompleteMutator implements Mutator<Character> {
     private double mutationProbability;
     private Random rand;
 
@@ -21,28 +22,22 @@ public class CompleteMutator<C extends Character> implements Mutator<C> {
 
 
     @Override
-    public List<C> mutate(List<C> zombies) {
-        List<C> mutated = new LinkedList<>();
-        for (C character : zombies) {
-            try {
-                mutated.add(mutateCharacter(character));
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-        }
-        return mutated;
+    public List<Character> mutate(List<Character> zombies) {
+        return zombies.parallelStream()
+                .map(this::mutateCharacter)
+                .collect(Collectors.toList());
     }
 
-    private C mutateCharacter(C character) throws CloneNotSupportedException {
+    private Character mutateCharacter(Character character) {
         if (rand.nextDouble() > mutationProbability) {
             return character;
         }
         Map<CharacteristicType,Characteristic> newSet = Characteristic.getRandomSet();
-        C newCharacter = (C) character.clone(); //ah?
+
         for(Map.Entry<CharacteristicType,Characteristic> item : newSet.entrySet()){
-            newCharacter.getCharacterAlleles().put(item.getKey(),item.getValue());
+            character.getCharacterAlleles().put(item.getKey(),item.getValue());
         }
-        return newCharacter;
+        return character;
     }
 }
 
