@@ -34,7 +34,7 @@ public class MultiGenMutator implements Mutator<Character> {
 
         //select allele range
         int allele;
-        int randomAlleleAmmount = rand.nextInt(character.getAllelesAmmount() + 1); //nextInt is exclusive
+        int randomAlleleAmmount = rand.nextInt(character.getAllelesAmmount());
         Set<Integer> mutatedAlleles = new HashSet<>();
         CharacteristicType toMutate;
 

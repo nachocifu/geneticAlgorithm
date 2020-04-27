@@ -16,17 +16,17 @@ public class ContentStopCondition implements StopCondition<Character> {
         this.lastMaximumFitness = 0;
         this.currCounter = 0;
         this.maximumFitness = 0;
-        this.maximumFitness = 0;
     }
 
     @Override
     public Boolean shouldContinue(List<Character> currentGeneration) {
 
         maximumFitness = getMaximumFitness(currentGeneration);
+        System.out.println("CurrentMax:"+maximumFitness+", lastMax:"+lastMaximumFitness+" Counter:"+currCounter);
 
         if(lastMaximumFitness == 0){ //first iteration
             lastMaximumFitness = maximumFitness;
-            return false;
+            return true;
         }
 
         if(lastMaximumFitness == maximumFitness){
@@ -41,14 +41,6 @@ public class ContentStopCondition implements StopCondition<Character> {
     }
 
     private static double getMaximumFitness(List<Character> currentGeneration){
-        double max = 0;
-        double curr = 0;
-        for(Character c : currentGeneration){
-            curr = c.getFitness();
-            if(curr > max){
-                max = curr;
-            }
-        }
-        return max;
+        return currentGeneration.parallelStream().mapToDouble(Character::getFitness).max().orElse(0);
     }
 }

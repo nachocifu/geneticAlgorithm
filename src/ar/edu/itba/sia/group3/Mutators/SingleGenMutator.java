@@ -37,7 +37,7 @@ public class SingleGenMutator implements Mutator<Character> {
         }
 
         //select allele
-        int randomAllele = rand.nextInt(character.getAllelesAmmount()+1); //nextInt is exclusive
+        int randomAllele = rand.nextInt(character.getAllelesAmmount());
         CharacteristicType toMutate = CharacteristicType.values()[randomAllele];
         if(toMutate == CharacteristicType.HEIGHT){
             double newHeight = rand.nextDouble()*(2 - 1.3) + 1.3;

@@ -1,54 +1,56 @@
 #Population
-populationSize = 100
+populationSize = 10000
 
 #CharacterType
 ## warrior, archer, defense, spy
-character = warrior
+character = archer
 
 #Selectors
-#selection methods: elite,ranking,deterministic tournament,stochastic tournament,roulette,universal,Boltzmann,none
+#selection methods: elite,ranking,deterministic_tournament,stochastic_tournament,roulette,universal,boltzmann,none
 #A is what % assigned to s1 and 1-A % assigned to s2
-A = 0.9
-selector_1 = elite
+A = 1
+selector_1 = boltzmann
 selector_2 = ranking
 #individuals selected from population
-K = 51
+K = 500
 #for individuals participating in tournaments tournament
 M = 2
 #for stochastic tournament
-threshold = 0.7
+threshold = 0.5
 
 #Replacers
 #same as selectors
 #B is what % assigned to s1 and 1-B % assigned to s2
-B = 0.01
-replacer_1 = elite
+B = 1
+replacer_1 = stochastic_tournament
 replacer_2 = ranking
+recombination_probability = 0.5
 
 #Implementation
 #implementation possibilities: fill_all, fill_parent
 implementation = fill_parent
 
 #Crosser
-#crosser methods: single point cross,double point cross, uniform cross,annular cross
-crosser = single_point
-recombination_probability = 0.7
+#crosser methods: single point cross,double point cross, uniform,annular cross
+crosser = uniform
+crosser_probability = 0.5
 
 #Mutator
 #mutation methods: uniform mutation,single gen mutation,multi gen mutation,complete
 mutator = uniform
-mutation_probability = 0.4
+mutation_probability = 0.5
 
 #Stop condition
 #stop conditions: time,max generation,structure,content,acceptable
-stop_condition = max_generation
+stop_condition = content
 #if 95% of the population doesnt change, ends
 structure_size_percent = 0.95
 structure_count = 10
-#if best fitness remains the same after 10 generations, ends
-content_count = 10
-max_generation = 500
+#if best fitness remains the same after 'content_count' generations, ends
+content_count = 3
+# for max gens
+max_generation = 1000
 #time in ms
-time = 36000000
+time = 60000
 #fitness value for acceptable solution
 fitness = 40

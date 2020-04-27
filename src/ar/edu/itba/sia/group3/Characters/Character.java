@@ -5,6 +5,7 @@ import ar.edu.itba.sia.group3.umbrellaCorporation.Victim;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 public abstract class Character extends Victim implements Cloneable {
@@ -150,4 +151,16 @@ public abstract class Character extends Victim implements Cloneable {
         return "Max "+max+" Min "+min+" Sum "+sum+" AVG "+(sum/list.size());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Character)) return false;
+        Character character = (Character) o;
+        return alleles.equals(character.alleles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(alleles);
+    }
 }

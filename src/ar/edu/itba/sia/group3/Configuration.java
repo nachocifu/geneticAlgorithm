@@ -113,8 +113,8 @@ public class Configuration {
 
     private static Selector<Character> createSelector(String selector, Double K){ //lo mismo con el parametro de character
         switch (selector){
-            case "Boltzmann":
-//                return new RuletaBoltzmannSelector(Integer.parseInt(parameters.get("K")));
+            case "boltzmann":
+                return new Boltzmann(Integer.parseInt(parameters.get("K")));
             case "elite":
                 return new EliteSelector(K.intValue());
             case "ranking":
@@ -214,7 +214,7 @@ public class Configuration {
             case "double_point":
                 return new DoublePoint();
             case "uniform":
-                return new Uniform(Double.parseDouble(parameters.get("recombination_probability")));
+                return new Uniform(Double.parseDouble(parameters.get("crosser_probability")));
             default:
                 return null;
         }
@@ -243,12 +243,12 @@ public class Configuration {
     private static void validateParameters(){
         //selectors
         if(!parameters.get("selector_1").equals("elite") && !parameters.get("selector_1").equals("ranking") && !parameters.get("selector_1").equals("deterministic_tournament") && !parameters.get("selector_1").equals("stochastic_tournament")
-                && !parameters.get("selector_1").equals("roulette") && !parameters.get("selector_1").equals("universal") && !parameters.get("selector_1").equals("Boltzmann")){
+                && !parameters.get("selector_1").equals("roulette") && !parameters.get("selector_1").equals("universal") && !parameters.get("selector_1").equals("boltzmann")){
             throw new IllegalArgumentException("invalid selector_1");
         }
 
         if(!parameters.get("selector_2").equals("elite") && !parameters.get("selector_2").equals("ranking") && !parameters.get("selector_2").equals("deterministic_tournament") && !parameters.get("selector_2").equals("stochastic_tournament")
-                && !parameters.get("selector_2").equals("roulette") && !parameters.get("selector_2").equals("universal") && !parameters.get("selector_2").equals("Boltzmann") && !parameters.get("selector_2").equals("none")){
+                && !parameters.get("selector_2").equals("roulette") && !parameters.get("selector_2").equals("universal") && !parameters.get("selector_2").equals("boltzmann") && !parameters.get("selector_2").equals("none")){
             throw new IllegalArgumentException("invalid selector_2");
         }
         if(parameters.get("selector_2").equals("none") && !parameters.get("A").equals("1")){

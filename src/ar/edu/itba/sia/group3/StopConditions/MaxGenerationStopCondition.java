@@ -16,6 +16,7 @@ public class MaxGenerationStopCondition implements StopCondition<Character> {
 
     @Override
     public Boolean shouldContinue(List<Character> currentGeneration) {
+        System.out.println(this.iterations - Engine.getGenerationNumber());
         return this.iterations > Engine.getGenerationNumber();
     }
 }

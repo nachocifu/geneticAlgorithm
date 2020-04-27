@@ -50,6 +50,7 @@ public class StructureStopCondition implements StopCondition<Character> {
             lastGeneration.addAll(currentGeneration);
         }
 
+        System.out.println(currCount+"<"+generations+" diff:"+(generations-currCount));
 
         return currCount < generations;
     }
