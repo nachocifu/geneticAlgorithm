@@ -62,7 +62,7 @@ public class Configuration {
     }
 
     private static Map<CharacteristicType,Map<Integer,Characteristic>> handleCharacteristics() throws IOException {
-        String dataDir = parameters.get("dataDir");
+        String dataDir = parameters.get("data_dir");
         Map<CharacteristicType,Map<Integer,Characteristic>> characteristics = new HashMap<>();
         Path root = Paths.get(".").normalize().toAbsolutePath();
         characteristics.put(CharacteristicType.CHESTPLATE,getCharacteristic(root+File.separator+dataDir+File.separator+"pecheras.tsv"));
