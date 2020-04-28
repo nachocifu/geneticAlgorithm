@@ -48,12 +48,11 @@ if there is an odd number of individuals, one is left alone.
 - Structure stop condition: given a number of generations and a percent value, the engine stops if after that amount of generations that given percent of the individuals remain the same.
 - Time stop condition: the engine stops after a certain amount of time.
 ### Compiling
-The following applies to unix based systems.
-First create on the root of the project a classes directory `mkdir classes`.
-Then choose desired settings for the engine in ConfigurationFile.txt.
-To compile the project run: `javac src/ar/edu/itba/sia/group3/*.java -d classes`.
-Then change directory to the classes directory generated. `cd classes`.
-Your ready to run the program with `java ar.edu.itba.sia.group3.Main`.
+The following applies to unix based systems. Compiling is done with ant.
+On the root directory of the proyect run `ant all` to compile the proyect.
+Then place a configuration file and data directory inside the generated directory `{proyectRoot}/out/production/geneticAlgorithm`.
+Shortcut for this could be: `cp ConfigurationFile.txt out/production/geneticAlgorithm && cp -r realdata out/production/geneticAlgorithm`.
+Then `cd` into such directory and run `java ar.edu.itba.sia.group3.Main`.
 ### Parameters
 - data_dir: path where data files are located.
 - Population_size.
