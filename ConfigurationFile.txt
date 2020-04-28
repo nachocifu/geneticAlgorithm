@@ -1,5 +1,5 @@
 #data directory
-data_dir = realdata
+data_dir = testdata
 
 #Population
 populationSize = 10000
