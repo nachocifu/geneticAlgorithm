@@ -49,10 +49,10 @@ if there is an odd number of individuals, one is left alone.
 - Time stop condition: the engine stops after a certain amount of time.
 ### Compiling
 The following applies to unix based systems. Compiling is done with ant.
-On the root directory of the proyect run `ant all` to compile the proyect.
-Then place a configuration file and data directory inside the generated directory `{proyectRoot}/out/production/geneticAlgorithm`.
-Shortcut for this could be: `cp ConfigurationFile.txt out/production/geneticAlgorithm && cp -r realdata out/production/geneticAlgorithm`.
-Then `cd` into such directory and run `java ar.edu.itba.sia.group3.Main`.
+On the root directory of the proyect run `ant compile` to compile the proyect.
+Then place a configuration file and data directory inside the generated directory `{proyectRoot}/build`.
+Shortcut for this could be: `cp ConfigurationFile.txt build && cp -r testdata build`.
+Then `cd build` into such directory and run `java ar.edu.itba.sia.group3.Main`.
 ### Parameters
 - data_dir: path where data files are located.
 - Population_size.
