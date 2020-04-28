@@ -2,11 +2,9 @@ package ar.edu.itba.sia.group3.Selectors;
 
 import ar.edu.itba.sia.group3.Characters.Character;
 import ar.edu.itba.sia.group3.umbrellaCorporation.Selector;
-import sun.awt.image.ImageWatched;
-
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 
 public class TorneoDeterministico implements Selector<Character> {
 
