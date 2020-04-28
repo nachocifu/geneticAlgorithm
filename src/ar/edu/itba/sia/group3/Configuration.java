@@ -62,13 +62,14 @@ public class Configuration {
     }
 
     private static Map<CharacteristicType,Map<Integer,Characteristic>> handleCharacteristics() throws IOException {
+        String dataDir = "realdata";
         Map<CharacteristicType,Map<Integer,Characteristic>> characteristics = new HashMap<>();
         Path root = Paths.get(".").normalize().toAbsolutePath();
-        characteristics.put(CharacteristicType.CHESTPLATE,getCharacteristic(root+File.separator+"testdata"+File.separator+"pecheras.tsv"));
-        characteristics.put(CharacteristicType.WEAPON,getCharacteristic(root+File.separator+"testdata"+File.separator+"armas.tsv"));
-        characteristics.put(CharacteristicType.BOOTS,getCharacteristic(root+File.separator+"testdata"+File.separator+"botas.tsv")); //resolve?
-        characteristics.put(CharacteristicType.GAUNTLETS,getCharacteristic(root+ File.separator+"testdata"+File.separator+"guantes.tsv"));
-        characteristics.put(CharacteristicType.HELMET,getCharacteristic(root+File.separator+"testdata"+File.separator+"cascos.tsv"));
+        characteristics.put(CharacteristicType.CHESTPLATE,getCharacteristic(root+File.separator+dataDir+File.separator+"pecheras.tsv"));
+        characteristics.put(CharacteristicType.WEAPON,getCharacteristic(root+File.separator+dataDir+File.separator+"armas.tsv"));
+        characteristics.put(CharacteristicType.BOOTS,getCharacteristic(root+File.separator+dataDir+File.separator+"botas.tsv")); //resolve?
+        characteristics.put(CharacteristicType.GAUNTLETS,getCharacteristic(root+ File.separator+dataDir+File.separator+"guantes.tsv"));
+        characteristics.put(CharacteristicType.HELMET,getCharacteristic(root+File.separator+dataDir+File.separator+"cascos.tsv"));
         return characteristics;
     }
 
