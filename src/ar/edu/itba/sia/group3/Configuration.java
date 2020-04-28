@@ -261,12 +261,12 @@ public class Configuration {
 
         //replacers
         if(!parameters.get("replacer_1").equals("elite") && !parameters.get("replacer_1").equals("ranking") && !parameters.get("replacer_1").equals("deterministic_tournament") && !parameters.get("replacer_1").equals("stochastic_tournament")
-                && !parameters.get("replacer_1").equals("roulette") && !parameters.get("replacer_1").equals("universal") && !parameters.get("replacer_1").equals("Boltzmann")){
+                && !parameters.get("replacer_1").equals("roulette") && !parameters.get("replacer_1").equals("universal") && !parameters.get("replacer_1").equals("boltzmann")){
             throw new IllegalArgumentException("invalid replacer_1");
         }
 
         if(!parameters.get("replacer_2").equals("elite") && !parameters.get("replacer_2").equals("ranking") && !parameters.get("replacer_2").equals("deterministic_tournament") && !parameters.get("replacer_2").equals("stochastic_tournament")
-                && !parameters.get("replacer_2").equals("roulette") && !parameters.get("replacer_2").equals("universal") && !parameters.get("replacer_2").equals("Boltzmann") && !parameters.get("replacer_2").equals("none")){
+                && !parameters.get("replacer_2").equals("roulette") && !parameters.get("replacer_2").equals("universal") && !parameters.get("replacer_2").equals("boltzmann") && !parameters.get("replacer_2").equals("none")){
             throw new IllegalArgumentException("invalid replacer_2");
         }
         if(parameters.get("replacer_2").equals("none") && !parameters.get("B").equals("1")){
@@ -287,9 +287,6 @@ public class Configuration {
         //crosser
         if(!parameters.get("crosser").equals("single_point") && !parameters.get("crosser").equals("double_point") && !parameters.get("crosser").equals("uniform") && !parameters.get("crosser").equals("annular")){
             throw new IllegalArgumentException("invalid crosser");
-        }
-        if(Double.parseDouble(parameters.get("recombination_probability")) > 1 && Double.parseDouble(parameters.get("recombination_probability")) < 0){
-            throw new IllegalArgumentException("invalid recombination_probability");
         }
 
         //mutator

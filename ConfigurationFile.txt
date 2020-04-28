@@ -1,21 +1,21 @@
 #data directory
-data_dir = testdata
+data_dir = realdata
 
 #Population
 populationSize = 10000
 
 #CharacterType
 ## warrior, archer, defense, spy
-character = archer
+character = warrior
 
 #Selectors
 #selection methods: elite,ranking,deterministic_tournament,stochastic_tournament,roulette,universal,boltzmann,none
 #A is what % assigned to s1 and 1-A % assigned to s2
-A = 1
-selector_1 = boltzmann
-selector_2 = ranking
+A = 0.9
+selector_1 = elite
+selector_2 = deterministic_tournament
 #individuals selected from population
-K = 500
+K = 10000
 #for individuals participating in tournaments tournament
 M = 2
 #for stochastic tournament
@@ -25,17 +25,16 @@ threshold = 0.5
 #same as selectors
 #B is what % assigned to s1 and 1-B % assigned to s2
 B = 1
-replacer_1 = stochastic_tournament
-replacer_2 = ranking
-recombination_probability = 0.5
+replacer_1 = elite
+replacer_2 = boltzmann
 
 #Implementation
 #implementation possibilities: fill_all, fill_parent
-implementation = fill_parent
+implementation = fill_all
 
 #Crosser
-#crosser methods: single point cross,double point cross, uniform,annular cross
-crosser = uniform
+#crosser methods: single point cross,double point cross, uniform,annular
+crosser = annular
 crosser_probability = 0.5
 
 #Mutator
@@ -45,7 +44,7 @@ mutation_probability = 0.5
 
 #Stop condition
 #stop conditions: time,max generation,structure,content,acceptable
-stop_condition = content
+stop_condition = time
 #if 95% of the population doesnt change, ends
 structure_size_percent = 0.95
 structure_count = 10
@@ -54,6 +53,6 @@ content_count = 3
 # for max gens
 max_generation = 1000
 #time in ms
-time = 60000
+time = 120000
 #fitness value for acceptable solution
 fitness = 40
